@@ -104,7 +104,7 @@ services:
   # Starting the docker service to be used by dind
   - name: docker
     image: docker:19.03-dind
-    privileged: false
+    privileged: true
     volumes:
       - name: dockersock
         path: /var/run
