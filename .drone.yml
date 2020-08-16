@@ -108,7 +108,7 @@ steps:
       ssh_private_key:
         from_secret: ssh_private_key
     commands:
-      - ./deploy-aur.sh
+      - /bin/bash deploy-aur.sh
 
 services:
   # Starting the docker service to be used by dind
