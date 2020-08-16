@@ -3,10 +3,10 @@
 set -e
 
 # Setup base system
-pacman -Syu --noconfirm && pacman -S --noconfirm openssh git gettext binutils
+pacman -Syu --noconfirm openssh git gettext binutils
 sed -i "s/INTEGRITY_CHECK=.*$/INTEGRITY_CHECK=(sha256)/" /etc/makepkg.conf
 useradd -ms /bin/bash aur
-su -m aur <<EOSU
+su -m aur <<'EOSU'
 
 # Configuration
 export PACKAGE_NAME="$PLUGIN_PACKAGE_NAME"
