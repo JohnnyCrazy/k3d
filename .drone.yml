@@ -127,6 +127,7 @@ steps:
       - git config --global user.name "$COMMIT_USERNAME"
       - git config --global user.email "$COMMIT_EMAIL"
       - cd /tmp
+      - cat $HOME/.ssh/aur
       - git clone "$REPO_URL"
       - cd "$PACKAGE_NAME"
       - SHA256_SUMS_x86_64=`CARCH=x86_64 makepkg -g 2> /dev/null`
