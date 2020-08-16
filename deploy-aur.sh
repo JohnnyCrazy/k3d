@@ -2,31 +2,34 @@
 
 set -e
 
-ls -la
-echo $PWD
-exit 0
+# Setup base system
 pacman -Syu --noconfirm && pacman -S --noconfirm openssh git gettext binutils
 sed -i "s/INTEGRITY_CHECK=.*$/INTEGRITY_CHECK=(sha256)/" /etc/makepkg.conf
 useradd -ms /bin/bash aur
 su aur
+
+# Configuration
 export PACKAGE_NAME=$PLUGIN_PACKAGE_NAME
 export REPO_URL="ssh://aur@aur.archlinux.org/$PACKAGE_NAME.git"
 export NEW_RELEASE=${DRONE_COMMIT_REF##*/v}
-- export NEW_RELEASE=3.0.1
 export COMMIT_USERNAME=$PLUGIN_COMMIT_USERNAME
 export COMMIT_EMAIL=$PLUGIN_COMMIT_EMAIL
 echo "---------------- AUR Package version $PACKAGE_NAME/$NEW_RELEASE ----------------"
+
+# SSH & GIT Setup
 mkdir $HOME/.ssh && chmod 700 $HOME/.ssh
 ssh-keyscan -t ed25519 aur.archlinux.org >> $HOME/.ssh/known_hosts
 echo -e "$PLUGIN_SSH_PRIVATE_KEY" | base64 -d > $HOME/.ssh/id_rsa
 chmod 600 $HOME/.ssh/id_rsa
 git config --global user.name "$COMMIT_USERNAME"
 git config --global user.email "$COMMIT_EMAIL"
+
+# Clone AUR Package & ship it
 cd /tmp
 echo "$REPO_URL"
 git clone "$REPO_URL"
 cd "$PACKAGE_NAME"
-Generate a dummy PKGBUILD so we can grab the latest releases SHA256SUMS
+# Generate a dummy PKGBUILD so we can grab the latest releases SHA256SUMS
 cat PKGBUILD.template | envsubst '$NEW_RELEASE' > PKGBUILD
 export SHA256_SUMS_x86_64="$(CARCH=x86_64 makepkg -g 2> /dev/null)"
 export SHA256_SUMS_aarch64="$(CARCH=aarch64 makepkg -g 2> /dev/null)"

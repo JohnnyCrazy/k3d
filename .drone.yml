@@ -108,8 +108,34 @@ steps:
       ssh_private_key:
         from_secret: ssh_private_key
     commands:
-      - /bin/bash deploy-aur.sh
+      - ./deploy-aur.sh
+    when:
+      event:
+        - tag
+      ref:
+        exclude:
+          - "refs/tags/*rc*"
+          - "refs/tags/*beta*"
+          - "refs/tags/*alpha*"
 
+  - name: pre-release-aur
+    image: archlinux:20200705
+    settings:
+      package_name: rancher-k3d-beta-bin
+      commit_username: Drone CI
+      commit_email: jonas@dellinger.dev
+      ssh_private_key:
+        from_secret: ssh_private_key
+    commands:
+      - ./deploy-aur.sh
+    when:
+      event:
+        - tag
+      ref:
+        include:
+          - "refs/tags/*rc*"
+          - "refs/tags/*beta*"
+          - "refs/tags/*alpha*"
 services:
   # Starting the docker service to be used by dind
   - name: docker
