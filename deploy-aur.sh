@@ -15,8 +15,6 @@ export NEW_RELEASE="${DRONE_COMMIT_REF##*/v}"
 export COMMIT_USERNAME="$PLUGIN_COMMIT_USERNAME"
 export COMMIT_EMAIL="$PLUGIN_COMMIT_EMAIL"
 export COMMIT_MESSAGE="$(echo $PLUGIN_COMMIT_MESSAGE | envsubst)"
-echo "$COMMIT_MESSAGE"
-exit 0
 echo "---------------- AUR Package version $PACKAGE_NAME/$NEW_RELEASE ----------------"
 
 # SSH & GIT Setup
