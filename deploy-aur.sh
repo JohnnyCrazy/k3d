@@ -6,7 +6,7 @@ set -e
 pacman -Syu --noconfirm && pacman -S --noconfirm openssh git gettext binutils
 sed -i "s/INTEGRITY_CHECK=.*$/INTEGRITY_CHECK=(sha256)/" /etc/makepkg.conf
 useradd -ms /bin/bash aur
-su aur
+su aur <<EOSU
 
 # Configuration
 export PACKAGE_NAME="$PLUGIN_PACKAGE_NAME"
@@ -42,3 +42,4 @@ git add PKGBUILD .SRCINFO
 git commit -m "$COMMIT_MESSAGE"
 git push
 echo "------------- PUBLISH DONE ----------------"
+EOSU
