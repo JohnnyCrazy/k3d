@@ -138,6 +138,12 @@ steps:
       - export SHA256_SUMS_arm="$(CARCH=arm makepkg -g 2> /dev/null)"
       - cat PKGBUILD.template | envsubst '$NEW_RELEASE$SHA256_SUMS_x86_64$SHA256_SUMS_aarch64$SHA256_SUMS_arm' > PKGBUILD
       - cat PKGBUILD
+      - makepkg --printsrcinfo > .SRCINFO
+      - echo "------------- BUILD DONE ----------------"
+      - git add PKGBUILD .SRCINFO
+      - git commit -m "[ci] Updated to $NEW_RELEASE"
+      - git push
+      - echo "------------- PUBLISH DONE ----------------"
 
 services:
   # Starting the docker service to be used by dind
