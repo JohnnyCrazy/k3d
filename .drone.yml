@@ -11,93 +11,93 @@ platform:
   arch: amd64
 
 steps:
-  - name: lint
-    image: golang:1.14
-    commands:
-      - make ci-setup
-      - make check-fmt lint
-    when:
-      event:
-        - push
-        - pull_request
-        - tag
+  # - name: lint
+  #   image: golang:1.14
+  #   commands:
+  #     - make ci-setup
+  #     - make check-fmt lint
+  #   when:
+  #     event:
+  #       - push
+  #       - pull_request
+  #       - tag
 
-  - name: test
-    image: docker:19.03
-    volumes:
-      - name: dockersock
-        path: /var/run
-    commands:
-      - apk add git bash curl sudo jq make
-      - sleep 5 # give docker enough time to start
-      - make e2e
-    when:
-      event:
-        - push
-        - pull_request
-        - tag
+  # - name: test
+  #   image: docker:19.03
+  #   volumes:
+  #     - name: dockersock
+  #       path: /var/run
+  #   commands:
+  #     - apk add git bash curl sudo jq make
+  #     - sleep 5 # give docker enough time to start
+  #     - make e2e
+  #   when:
+  #     event:
+  #       - push
+  #       - pull_request
+  #       - tag
 
-  - name: build
-    image: golang:1.14
-    environment:
-      GIT_TAG: "${DRONE_TAG}"
-    commands:
-      - make ci-setup
-      - make build-cross
-    depends_on:
-      - lint
-      - test
-    when:
-      branch:
-        - main
-      event:
-        - push
-        - tag
+  # - name: build
+  #   image: golang:1.14
+  #   environment:
+  #     GIT_TAG: "${DRONE_TAG}"
+  #   commands:
+  #     - make ci-setup
+  #     - make build-cross
+  #   depends_on:
+  #     - lint
+  #     - test
+  #   when:
+  #     branch:
+  #       - main
+  #     event:
+  #       - push
+  #       - tag
 
-  - name: pre-release
-    image: plugins/github-release
-    settings:
-      api_key:
-        from_secret: github_token
-      files:
-        - _dist/*
-      checksum:
-        - sha256
-      prerelease: true
-    depends_on:
-      - lint
-      - test
-      - build
-    when:
-      event:
-        - tag
-      ref:
-        include:
-          - "refs/tags/*rc*"
-          - "refs/tags/*beta*"
-          - "refs/tags/*alpha*"
+  # - name: pre-release
+  #   image: plugins/github-release
+  #   settings:
+  #     api_key:
+  #       from_secret: github_token
+  #     files:
+  #       - _dist/*
+  #     checksum:
+  #       - sha256
+  #     prerelease: true
+  #   depends_on:
+  #     - lint
+  #     - test
+  #     - build
+  #   when:
+  #     event:
+  #       - tag
+  #     ref:
+  #       include:
+  #         - "refs/tags/*rc*"
+  #         - "refs/tags/*beta*"
+  #         - "refs/tags/*alpha*"
 
-  - name: release
-    image: plugins/github-release
-    settings:
-      api_key:
-        from_secret: github_token
-      files:
-        - _dist/*
-      checksum:
-        - sha256
-    depends_on:
-      - lint
-      - test
-      - build
-    when:
-      event:
-        - tag
-      ref:
-        exclude:
-          - "refs/tags/*rc*"
-          - "refs/tags/*beta*"
-          - "refs/tags/*alpha*"
+  # - name: release
+  #   image: plugins/github-release
+  #   settings:
+  #     api_key:
+  #       from_secret: github_token
+  #     files:
+  #       - _dist/*
+  #     checksum:
+  #       - sha256
+  #   depends_on:
+  #     - lint
+  #     - test
+  #     - build
+  #   when:
+  #     event:
+  #       - tag
+  #     ref:
+  #       exclude:
+  #         - "refs/tags/*rc*"
+  #         - "refs/tags/*beta*"
+  #         - "refs/tags/*alpha*"
 
   - name: release-aur
     image: archlinux:20200705
