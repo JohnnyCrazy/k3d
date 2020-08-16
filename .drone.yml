@@ -111,7 +111,7 @@ steps:
       - makepkg --version
       - env | sort
       - pacman -Syu --noconfirm && pacman -S --noconfirm openssh git
-      - PACKAGE_NAME=$INPUT_PACKAGE_NAME
+      - PACKAGE_NAME=$PLUGIN_PACKAGE_NAME
       - REPO_URL="ssh://aur@aur.archlinux.org/${PACKAGE_NAME}.git"
       #- NEW_RELEASE=${DRONE_COMMIT_REF##*/v}
       - NEW_RELEASE=3.0.1
