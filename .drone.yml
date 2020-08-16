@@ -121,12 +121,12 @@ steps:
       - sed -i "s/INTEGRITY_CHECK=.*$/INTEGRITY_CHECK=(sha256)/" /etc/makepkg.conf
       - mkdir $HOME/.ssh && chmod 700 $HOME/.ssh
       - ssh-keyscan -t ed25519 aur.archlinux.org >> $HOME/.ssh/known_hosts
-      - echo -e "$PLUGIN_SSH_PRIVATE_KEY" | base64 -d > $HOME/.ssh/aur
-      - chmod 600 $HOME/.ssh/aur*
+      - echo -e "$PLUGIN_SSH_PRIVATE_KEY" | base64 -d > $HOME/.ssh/id_rsa
+      - chmod 600 $HOME/.ssh/id_rsa
+      - ssh-add $HOME/.ssh/id_rsa
       - git config --global user.name "$COMMIT_USERNAME"
       - git config --global user.email "$COMMIT_EMAIL"
       - cd /tmp
-      - cat $HOME/.ssh/aur
       - git clone "$REPO_URL"
       - cd "$PACKAGE_NAME"
       - SHA256_SUMS_x86_64=`CARCH=x86_64 makepkg -g 2> /dev/null`
