@@ -9,6 +9,7 @@ useradd -ms /bin/bash aur
 su -m aur <<'EOSU'
 
 # Configuration
+export HOME=/home/aur
 export PACKAGE_NAME="$PLUGIN_PACKAGE_NAME"
 export REPO_URL="ssh://aur@aur.archlinux.org/$PACKAGE_NAME.git"
 export NEW_RELEASE="${DRONE_COMMIT_REF##*/v}"
