@@ -124,6 +124,7 @@ steps:
       package_name: rancher-k3d-beta-bin
       commit_username: Drone CI
       commit_email: jonas@dellinger.dev
+      commit_message: "[ci] Updated to $NEW_RELEASE"
       ssh_private_key:
         from_secret: ssh_private_key
     commands:
