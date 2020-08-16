@@ -101,8 +101,12 @@ steps:
 
   - name: release-aur
     image: archlinux:20200705
+    settings:
+      commit_username: Drone CI
+      commit_email: jonas@dellinger.dev
     commands:
       - makepkg --version
+      - env | sort
 
 services:
   # Starting the docker service to be used by dind
