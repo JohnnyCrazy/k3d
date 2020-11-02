@@ -20,7 +20,7 @@ echo "---------------- AUR Package version $PACKAGE_NAME/$NEW_RELEASE ----------
 # SSH & GIT Setup
 mkdir "$HOME/.ssh" && chmod 700 "$HOME/.ssh"
 ssh-keyscan -t ed25519 aur.archlinux.org >> "$HOME/.ssh/known_hosts"
-echo -e "$PLUGIN_SSH_PRIVATE_KEY" | base64 -d > "$HOME/.ssh/id_rsa"
+echo -e "$SSH_PRIVATE_KEY" | base64 -d > "$HOME/.ssh/id_rsa"
 chmod 600 "$HOME/.ssh/id_rsa"
 git config --global user.name "$COMMIT_USERNAME"
 git config --global user.email "$COMMIT_EMAIL"
