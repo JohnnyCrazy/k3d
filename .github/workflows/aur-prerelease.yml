@@ -2,7 +2,7 @@ name: AUR Prerelease
 
 on:
   release:
-    types: [released]
+    types: [prereleased]
 
 jobs:
   aur-prerelease:
