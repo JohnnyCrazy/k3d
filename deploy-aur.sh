@@ -38,6 +38,6 @@ makepkg --printsrcinfo > .SRCINFO
 echo "------------- BUILD DONE ----------------"
 git add PKGBUILD .SRCINFO
 git commit -m "$COMMIT_MESSAGE"
-git push
+# git push
 echo "------------- PUBLISH DONE ----------------"
 EOSU
