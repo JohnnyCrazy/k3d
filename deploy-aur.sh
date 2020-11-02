@@ -8,6 +8,8 @@ sed -i "s/INTEGRITY_CHECK=.*$/INTEGRITY_CHECK=(sha256)/" /etc/makepkg.conf
 useradd -ms /bin/bash aur
 su -m aur <<'EOSU'
 
+set -e
+
 # Configuration
 export HOME=/home/aur
 export REPO_URL="ssh://aur@aur.archlinux.org/$PACKAGE_NAME.git"
